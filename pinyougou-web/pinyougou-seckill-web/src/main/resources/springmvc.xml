@@ -2,18 +2,21 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd
+
+
        http://code.alibabatech.com/schema/dubbo
-       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
-
+    <!-- 开启任务注解驱动 -->
+    <task:annotation-driven/>
+    <!-- 配置任务调度方式 -->
+    <task:scheduler id="scheduler"/>
     <!-- 开启MVC注解驱动 -->
     <mvc:annotation-driven>
         <!-- 配置消息转换 -->
@@ -39,5 +42,5 @@
     <dubbo:registry address="zookeeper://192.168.12.131:2181"/>
 
     <!-- 配置包扫描的方式，生成远程服务接口的代理对象 -->
-    <dubbo:annotation package="com.pinyougou.seckill.controller"/>
+    <dubbo:annotation package="com.pinyougou.seckill"/>
 </beans>

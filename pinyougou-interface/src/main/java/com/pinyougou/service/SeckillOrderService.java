@@ -57,4 +57,16 @@ public interface SeckillOrderService {
 
     // 在数据库中插入秒杀商品支付订单,同事将redis中的支付订单删除
 	void addOrder(String userId, String transationId);
+
+	/**
+	 *     查询超时未支付的订单
+	 */
+
+    List<SeckillOrder> findOrederTimeOut();
+
+	/**
+	 *     删除redis中超时的订单
+	 * @param seckillOrder
+	 */
+	void deleteOrderForRedis(SeckillOrder seckillOrder);
 }

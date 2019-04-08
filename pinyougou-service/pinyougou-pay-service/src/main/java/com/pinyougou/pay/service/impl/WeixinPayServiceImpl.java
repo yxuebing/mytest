@@ -35,6 +35,8 @@ public class WeixinPayServiceImpl implements WeixinPayService {
     // 查询订单接口URL
     @Value("${orderquery}")
     private String orderquery;
+    @Value("${closeorder}")
+    private String  closeorder ;
 
     /**
      * 调用微信支付系统的"统一下单"接口，
@@ -123,5 +125,33 @@ public class WeixinPayServiceImpl implements WeixinPayService {
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }
+    }
+
+    /**
+     * 调用微信支付系统关闭订单的接口
+     * @param outTradeNo
+     * @return 关闭状态码 return_code
+     */
+    @Override
+    public Map<String, String> closePayTimeOut(String outTradeNo)  {
+        try {
+
+            Map<String , String> map = new HashMap<>();
+               map.put("appid",appid);
+               map.put("mch_id",partner);
+               map.put("out_trade_no",outTradeNo);
+               map.put("nonce_str",WXPayUtil.generateNonceStr());
+
+            String xml = WXPayUtil.generateSignedXml(map, partnerkey);
+            System.out.println("请求参数: " + xml);
+            HttpClientUtils httpClientUtils = new HttpClientUtils(true);
+            String xmlData = httpClientUtils.sendPost(closeorder, xml);
+            System.out.println("关闭订单接口的响应数据：" + xmlData);
+            return   WXPayUtil.xmlToMap(xmlData);
+
+        } catch (Exception e) {
+             throw  new RuntimeException(e);
+        }
+
     }
 }
